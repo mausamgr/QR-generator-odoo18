@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="web_account" inherit_id="account.portal_invoice_page">
+        <xpath expr="//div[hasclass('o_download_pdf')]" position="after">
+            <div class="o_social_share mt-4">
+                <h6 class="mb-3">Share Invoice</h6>
+                <div class="d-flex align-items-center gap-2">
+
+
+
+                    
+                    <a t-att-href="'https://www.facebook.com/sharer/sharer.php?u=' + request.httprequest.url" 
+                       target="_blank" 
+                       class="btn btn-sm text-white"
+                       style="background-color: #3b5998;">
+                        <i class="fa fa-facebook me-1"></i>
+                        Facebook
+                    </a>
+
+
+                    <a t-att-href="'https://api.whatsapp.com/send?text=' + request.httprequest.url"
+                       target="_blank"
+                       class="btn btn-sm text-white"
+                       style="background-color: #25D366;">
+                        <i class="fa fa-whatsapp me-1"></i>
+                        WhatsApp
+                    </a>
+
+                    <a t-att-href="'https://twitter.com/intent/tweet?url=' + request.httprequest.url"
+                       target="_blank"
+                       class="btn btn-sm text-white"
+                       style="background-color: #000000;">
+                        <i class="fa fa-twitter me-1"></i>
+                        Twitter
+                    </a>
+
+
+
+                    <button class="btn btn-sm btn-secondary copy-link"
+                            t-att-data-url="request.httprequest.url"
+                            onclick="navigator.clipboard.writeText(this.getAttribute('data-url')).then(() => {
+                                this.innerHTML = '&lt;i class=&quot;fa fa-check me-1&quot;&gt;&lt;/i&gt;Copied!';
+                                setTimeout(() => {
+                                    this.innerHTML = '&lt;i class=&quot;fa fa-link me-1&quot;&gt;&lt;/i&gt;Copy Link';
+                                }, 2000);
+                            })">
+                        <i class="fa fa-link me-1"></i>
+                        Copy Link
+                    </button>
+                </div>
+            </div>
+
+            <style>
+                .o_social_share .btn {
+                    transition: opacity 0.3s;
+                }
+                .o_social_share .btn:hover {
+                    opacity: 0.9;
+                }
+            </style>
+        </xpath>
+    </template>
+
+
+    <template id="communicationHistory" name="commnHistory" inherit_id="account.portal_invoice_page">
+        <xpath expr="//div[@id='invoice_communication']" position="replace">
+            <t t-if="not request.env.user._is_public()">
+                <div id="invoice_communication" class="mt-4">
+                        <h3>Communication history</h3>
+                        <t t-call="portal.message_thread"/>
+             </div>
+            </t>
+             
+        </xpath>
+    </template>
+
+    <template id="powerBy" name="PowerBy" inherit_id="portal.portal_record_sidebar">
+        <xpath expr="//div[hasclass('text-muted')]" position="replace">
+        <p>
+
+        Powered by <t t-esc="request.env.company.name"/>
+        
+        </p>
+
+        </xpath>
+    </template>
+</odoo>
